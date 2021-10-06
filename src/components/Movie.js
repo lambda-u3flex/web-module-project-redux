@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
+import { deleteMovie } from "../actions/movieActions";
 
 const Movie = (props) => {
   const { id } = useParams();
@@ -8,6 +9,11 @@ const Movie = (props) => {
 
   const movies = props.movies;
   const movie = movies.find((movie) => movie.id === Number(id));
+
+  const handleDelete = () => {
+    props.deleteMovie(movie.id);
+    push("/movies");
+  };
 
   return (
     <div className="modal-page col">
@@ -54,6 +60,7 @@ const Movie = (props) => {
                     type="button"
                     className="m-2 btn btn-danger"
                     value="Delete"
+                    onClick={handleDelete}
                   />
                 </span>
               </section>
@@ -71,4 +78,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Movie);
+const mapActionsToProps = {
+  deleteMovie,
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(Movie);
